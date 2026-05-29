@@ -8,7 +8,7 @@ import { countWords, downloadFile, formatDate, NOTE_COLORS, cn } from "@/lib/uti
 import type { NoteColor } from "@/lib/types";
 import {
   Pin, Star, Archive, Trash2, Download, Eye, Edit3,
-  CheckCircle2, Loader2, AlertCircle, Palette,
+  CheckCircle2, Loader2, AlertCircle, Palette, ArrowLeft,
 } from "lucide-react";
 import dynamic from "next/dynamic";
 
@@ -21,7 +21,7 @@ interface NoteEditorProps {
 }
 
 export function NoteEditor({ noteId }: NoteEditorProps) {
-  const { notes, deleteNote, togglePin, toggleFavorite, toggleArchive, setColor, saveStatus, setSaveStatus } = useNotesStore();
+  const { notes, deleteNote, togglePin, toggleFavorite, toggleArchive, setColor, saveStatus, setSaveStatus, selectNote } = useNotesStore();
   const note = notes.find((n) => n.id === noteId);
 
   const [title, setTitle] = useState(note?.title ?? "");
@@ -66,6 +66,15 @@ export function NoteEditor({ noteId }: NoteEditorProps) {
     <div className={cn("flex flex-col h-full transition-colors duration-300", colors.bg)}>
       {/* Toolbar */}
       <div className="flex items-center gap-1 px-4 py-2 border-b border-border/60 flex-wrap backdrop-blur-sm">
+        {/* Back button — solo mobile */}
+        <button
+          onClick={() => selectNote(null)}
+          className="md:hidden p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors mr-1"
+          title="Torna alla lista"
+        >
+          <ArrowLeft className="w-4 h-4" />
+        </button>
+
         {/* Left actions */}
         <div className="flex items-center gap-1">
           <ToolbarBtn

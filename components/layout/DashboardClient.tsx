@@ -7,6 +7,7 @@ import { ShortcutsModal } from "@/components/layout/ShortcutsModal";
 import { TagManager } from "@/components/tags/TagManager";
 import { useKeyboardShortcuts } from "@/lib/hooks/useKeyboardShortcuts";
 import { createClient } from "@/lib/supabase/client";
+import { cn } from "@/lib/utils";
 import { FileText, Loader2 } from "lucide-react";
 
 export function DashboardClient() {
@@ -46,9 +47,24 @@ export function DashboardClient() {
 
   return (
     <div className="flex h-screen overflow-hidden bg-background">
-      <Sidebar searchRef={searchRef} />
+      {/* Sidebar: a tutta larghezza su mobile, fissa su desktop.
+          Su mobile viene nascosta quando una nota è aperta. */}
+      <div
+        className={cn(
+          "w-full md:w-64 md:flex-shrink-0 h-full",
+          selectedNoteId ? "hidden md:block" : "block"
+        )}
+      >
+        <Sidebar searchRef={searchRef} />
+      </div>
 
-      <main className="flex-1 overflow-hidden">
+      {/* Area principale: nascosta su mobile finché non si apre una nota */}
+      <main
+        className={cn(
+          "flex-1 overflow-hidden",
+          selectedNoteId ? "block" : "hidden md:block"
+        )}
+      >
         {selectedNoteId ? (
           <NoteEditor key={selectedNoteId} noteId={selectedNoteId} />
         ) : (

@@ -39,7 +39,7 @@ export function Sidebar({ searchRef }: SidebarProps) {
   }
 
   return (
-    <aside className="w-64 flex-shrink-0 flex flex-col border-r border-border bg-card/50 backdrop-blur h-full">
+    <aside className="w-full flex flex-col border-r border-border bg-card/50 backdrop-blur h-full">
       {/* Header */}
       <div className="p-3 border-b border-border flex items-center gap-2">
         <div className="flex items-center gap-2 flex-1 min-w-0">
@@ -71,7 +71,7 @@ export function Sidebar({ searchRef }: SidebarProps) {
             placeholder="Cerca note… (Ctrl+F)"
             value={filters.search}
             onChange={(e) => setFilter({ search: e.target.value })}
-            className="w-full pl-8 pr-3 py-1.5 text-sm bg-muted rounded-md outline-none focus:ring-2 focus:ring-ring placeholder:text-muted-foreground"
+            className="w-full pl-8 pr-3 py-2 text-sm bg-muted/60 border border-transparent rounded-lg outline-none focus:bg-background focus:border-violet-500/50 focus:ring-2 focus:ring-violet-500/20 transition-all placeholder:text-muted-foreground"
           />
         </div>
       </div>
@@ -119,9 +119,9 @@ export function Sidebar({ searchRef }: SidebarProps) {
             key={s.id}
             onClick={() => setFilter({ section: s.id, tagId: null })}
             className={cn(
-              "w-full flex items-center gap-2.5 px-2 py-1.5 rounded-lg text-sm transition-colors",
+              "w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm font-medium transition-all",
               filters.section === s.id && !filters.tagId
-                ? "bg-primary text-primary-foreground"
+                ? "bg-gradient-to-r from-violet-500 to-indigo-600 text-white shadow-sm"
                 : "text-muted-foreground hover:text-foreground hover:bg-accent"
             )}
           >
@@ -161,9 +161,9 @@ export function Sidebar({ searchRef }: SidebarProps) {
                   section: "all",
                 })}
                 className={cn(
-                  "w-full flex items-center gap-2 px-2 py-1.5 rounded-lg text-sm transition-colors",
+                  "w-full flex items-center gap-2 px-2.5 py-2 rounded-lg text-sm font-medium transition-all",
                   filters.tagId === tag.id
-                    ? "bg-primary text-primary-foreground"
+                    ? "bg-accent text-foreground ring-1 ring-border"
                     : "text-muted-foreground hover:text-foreground hover:bg-accent"
                 )}
               >
