@@ -114,7 +114,8 @@ export const useNotesStore = create<NotesState>()((set, get) => ({
     try {
       const [notes, tags] = await Promise.all([fetchNotes(), fetchTags()]);
       set({ notes, tags, isLoading: false });
-    } catch {
+    } catch (err) {
+      console.error("[Notetaker] loadAll error:", err);
       set({ isLoading: false });
     }
   },
@@ -122,8 +123,12 @@ export const useNotesStore = create<NotesState>()((set, get) => ({
   selectNote: (id) => set({ selectedNoteId: id }),
 
   newNote: async () => {
-    const note = await createNote();
-    set((s) => ({ notes: [note, ...s.notes], selectedNoteId: note.id }));
+    try {
+      const note = await createNote();
+      set((s) => ({ notes: [note, ...s.notes], selectedNoteId: note.id }));
+    } catch (err) {
+      console.error("[Notetaker] newNote error:", err);
+    }
   },
 
   saveNote: async (id, title, content) => {
@@ -136,7 +141,8 @@ export const useNotesStore = create<NotesState>()((set, get) => ({
         saveStatus: "saved",
       }));
       setTimeout(() => set({ saveStatus: "idle" }), 2000);
-    } catch {
+    } catch (err) {
+      console.error("[Notetaker] saveNote error:", err);
       set({ saveStatus: "error" });
     }
   },
