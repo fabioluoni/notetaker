@@ -31,12 +31,19 @@ export function AuthForm({ mode }: AuthFormProps) {
         router.push("/dashboard");
         router.refresh();
       } else {
-        const { error } = await supabase.auth.signUp({
+        const { data, error } = await supabase.auth.signUp({
           email, password,
           options: { emailRedirectTo: `${location.origin}/api/auth/callback` },
         });
         if (error) throw error;
-        setError("Controlla la tua email per confermare l'account.");
+        if (data.session) {
+          // Conferma email disabilitata → accesso diretto
+          router.push("/dashboard");
+          router.refresh();
+        } else {
+          // Conferma email abilitata → avvisa l'utente
+          setError("Controlla la tua email per confermare l'account.");
+        }
       }
     } catch (err: any) {
       setError(err.message ?? "Errore sconosciuto");
