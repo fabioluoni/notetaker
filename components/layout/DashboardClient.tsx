@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNotesStore } from "@/lib/store/notesStore";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { NoteEditor } from "@/components/notes/NoteEditor";
@@ -7,14 +7,17 @@ import { ShortcutsModal } from "@/components/layout/ShortcutsModal";
 import { TagManager } from "@/components/tags/TagManager";
 import { useKeyboardShortcuts } from "@/lib/hooks/useKeyboardShortcuts";
 import { createClient } from "@/lib/supabase/client";
-import { FileText } from "lucide-react";
+import { FileText, Loader2 } from "lucide-react";
 
 export function DashboardClient() {
   const { loadAll, selectedNoteId, isShortcutsOpen, isTagManagerOpen } = useNotesStore();
   const searchRef = useRef<HTMLInputElement>(null);
+  const [mounted, setMounted] = useState(false);
   useKeyboardShortcuts(searchRef);
 
   useEffect(() => {
+    setMounted(true);
+    console.log("[Notetaker] build: fix-hydration-v3 — dashboard mounted");
     loadAll();
 
     // Real-time subscription
@@ -31,6 +34,15 @@ export function DashboardClient() {
 
     return () => { supabase.removeChannel(channel); };
   }, [loadAll]);
+
+  // Evita hydration mismatch: render solo lato client dopo il mount
+  if (!mounted) {
+    return (
+      <div className="flex h-screen items-center justify-center bg-background">
+        <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
 
   return (
     <div className="flex h-screen overflow-hidden bg-background">
