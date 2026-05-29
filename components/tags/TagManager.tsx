@@ -47,36 +47,42 @@ export function TagManager() {
         </div>
 
         {/* Create form */}
-        <form onSubmit={handleCreate} className="flex gap-2 mb-4">
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Nome tag…"
-            maxLength={30}
-            className="flex-1 px-3 py-2 text-sm border border-input rounded-lg bg-background outline-none focus:ring-2 focus:ring-ring placeholder:text-muted-foreground"
-          />
-          <div className="flex items-center gap-1">
-            {PRESET_COLORS.map((c) => (
-              <button
-                key={c}
-                type="button"
-                onClick={() => setColor(c)}
-                className={cn(
-                  "w-5 h-5 rounded-full transition-all",
-                  color === c ? "ring-2 ring-offset-1 ring-primary scale-110" : "hover:scale-110"
-                )}
-                style={{ backgroundColor: c }}
-              />
-            ))}
+        <form onSubmit={handleCreate} className="mb-4 space-y-3">
+          <div className="flex gap-2">
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Nome tag…"
+              maxLength={30}
+              className="flex-1 min-w-0 px-3 py-2 text-sm border border-input rounded-lg bg-background outline-none focus:ring-2 focus:ring-ring placeholder:text-muted-foreground"
+            />
+            <button
+              type="submit"
+              disabled={!name.trim()}
+              className="flex-shrink-0 flex items-center gap-1 px-3 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors disabled:opacity-50"
+            >
+              <Plus className="w-4 h-4" />
+              Crea
+            </button>
           </div>
-          <button
-            type="submit"
-            disabled={!name.trim()}
-            className="p-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50"
-          >
-            <Plus className="w-4 h-4" />
-          </button>
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-muted-foreground">Colore:</span>
+            <div className="flex items-center gap-1.5">
+              {PRESET_COLORS.map((c) => (
+                <button
+                  key={c}
+                  type="button"
+                  onClick={() => setColor(c)}
+                  className={cn(
+                    "w-6 h-6 rounded-full transition-all",
+                    color === c ? "ring-2 ring-offset-2 ring-offset-card ring-primary scale-110" : "hover:scale-110"
+                  )}
+                  style={{ backgroundColor: c }}
+                />
+              ))}
+            </div>
+          </div>
         </form>
 
         {error && <p className="text-xs text-destructive mb-3">{error}</p>}
