@@ -39,17 +39,22 @@ export function Sidebar({ searchRef }: SidebarProps) {
   }
 
   return (
-    <aside className="w-64 flex-shrink-0 flex flex-col border-r border-border bg-card h-full">
+    <aside className="w-64 flex-shrink-0 flex flex-col border-r border-border bg-card/50 backdrop-blur h-full">
       {/* Header */}
       <div className="p-3 border-b border-border flex items-center gap-2">
-        <div className="flex-1">
-          <h1 className="font-bold text-base tracking-tight">Notetaker</h1>
-          <p className="text-xs text-muted-foreground">{filteredNotes.length} note</p>
+        <div className="flex items-center gap-2 flex-1 min-w-0">
+          <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-indigo-600 text-white shadow-sm flex-shrink-0">
+            <StickyNote className="w-4 h-4" />
+          </div>
+          <div className="min-w-0">
+            <h1 className="font-bold text-base tracking-tight leading-none">Notetaker</h1>
+            <p className="text-xs text-muted-foreground mt-0.5">{filteredNotes.length} note</p>
+          </div>
         </div>
         <ThemeToggle />
         <button
           onClick={newNote}
-          className="p-2 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+          className="p-2 rounded-lg bg-gradient-to-br from-violet-500 to-indigo-600 text-white hover:opacity-90 shadow-sm transition-opacity"
           title="Nuova nota (Ctrl+N)"
         >
           <Plus className="w-4 h-4" />

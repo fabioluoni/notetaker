@@ -63,9 +63,9 @@ export function NoteEditor({ noteId }: NoteEditorProps) {
   const chars = content.length;
 
   return (
-    <div className={cn("flex flex-col h-full", colors.bg, colors.bgDark)}>
+    <div className={cn("flex flex-col h-full transition-colors duration-300", colors.bg)}>
       {/* Toolbar */}
-      <div className="flex items-center gap-1 px-4 py-2 border-b border-border flex-wrap">
+      <div className="flex items-center gap-1 px-4 py-2 border-b border-border/60 flex-wrap backdrop-blur-sm">
         {/* Left actions */}
         <div className="flex items-center gap-1">
           <ToolbarBtn
@@ -81,7 +81,7 @@ export function NoteEditor({ noteId }: NoteEditorProps) {
             active={note.is_favorite}
             title={note.is_favorite ? "Rimuovi dai preferiti" : "Aggiungi ai preferiti"}
           >
-            <Star className={cn("w-4 h-4", note.is_favorite && "fill-yellow-400 text-yellow-500")} />
+            <Star className={cn("w-4 h-4", note.is_favorite && "fill-amber-400 text-amber-500")} />
           </ToolbarBtn>
 
           <ToolbarBtn
@@ -152,13 +152,14 @@ export function NoteEditor({ noteId }: NoteEditorProps) {
 
       {/* Tags display */}
       {(note.tags?.length ?? 0) > 0 && (
-        <div className="flex gap-1.5 px-4 pt-2 flex-wrap">
+        <div className="flex gap-1.5 px-6 pt-3 flex-wrap">
           {note.tags!.map((tag) => (
             <span
               key={tag.id}
-              className="px-2 py-0.5 rounded-full text-xs font-medium"
+              className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium"
               style={{ backgroundColor: tag.color + "22", color: tag.color }}
             >
+              <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: tag.color }} />
               {tag.name}
             </span>
           ))}
@@ -171,14 +172,21 @@ export function NoteEditor({ noteId }: NoteEditorProps) {
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         placeholder="Titolo nota…"
-        className="w-full px-6 pt-5 pb-2 text-2xl font-bold bg-transparent outline-none placeholder:text-muted-foreground/50"
+        className="w-full px-6 pt-5 pb-2 text-3xl font-bold tracking-tight bg-transparent outline-none placeholder:text-muted-foreground/40"
       />
 
       {/* Meta */}
-      <p className="px-6 text-xs text-muted-foreground mb-3">
-        Creata {formatDate(note.created_at)} · Modificata {formatDate(note.updated_at)}
-        {" · "}{words} {words === 1 ? "parola" : "parole"} · {chars} {chars === 1 ? "carattere" : "caratteri"}
-      </p>
+      <div className="px-6 flex items-center gap-2 text-xs text-muted-foreground mb-4">
+        <span className="inline-flex items-center gap-1.5 px-2 py-1 rounded-md bg-foreground/5">
+          {words} {words === 1 ? "parola" : "parole"}
+        </span>
+        <span className="inline-flex items-center gap-1.5 px-2 py-1 rounded-md bg-foreground/5">
+          {chars} caratteri
+        </span>
+        <span className="text-muted-foreground/70">
+          Modificata {formatDate(note.updated_at)}
+        </span>
+      </div>
 
       {/* Editor / Preview */}
       <div className="flex-1 overflow-auto px-6 pb-6">

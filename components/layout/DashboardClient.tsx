@@ -65,21 +65,26 @@ export function DashboardClient() {
 function EmptyState() {
   const newNote = useNotesStore((s) => s.newNote);
   return (
-    <div className="flex flex-col items-center justify-center h-full text-center gap-4 text-muted-foreground">
-      <div className="p-6 rounded-full bg-muted">
-        <FileText className="w-12 h-12" />
+    <div className="relative flex flex-col items-center justify-center h-full text-center gap-5 text-muted-foreground overflow-hidden">
+      {/* Sfondo decorativo */}
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-violet-500/5 via-transparent to-indigo-500/5" />
+      <div className="pointer-events-none absolute -top-24 -right-24 w-72 h-72 rounded-full bg-violet-500/10 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-24 -left-24 w-72 h-72 rounded-full bg-indigo-500/10 blur-3xl" />
+
+      <div className="relative flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-violet-500 to-indigo-600 text-white shadow-lg shadow-violet-500/20">
+        <FileText className="w-9 h-9" />
       </div>
-      <div>
-        <h2 className="text-lg font-semibold text-foreground">Nessuna nota selezionata</h2>
-        <p className="text-sm mt-1">Seleziona una nota dalla lista o creane una nuova</p>
+      <div className="relative">
+        <h2 className="text-xl font-bold tracking-tight text-foreground">Inizia a scrivere</h2>
+        <p className="text-sm mt-1.5 max-w-xs">Seleziona una nota dalla lista a sinistra oppure creane una nuova per cominciare.</p>
       </div>
       <button
         onClick={newNote}
-        className="px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
+        className="relative px-5 py-2.5 bg-gradient-to-br from-violet-500 to-indigo-600 text-white rounded-xl text-sm font-semibold hover:opacity-90 shadow-md shadow-violet-500/20 transition-opacity"
       >
-        Nuova nota
+        + Crea la tua prima nota
       </button>
-      <p className="text-xs">oppure premi <kbd className="px-1.5 py-0.5 rounded border text-xs font-mono">Ctrl+N</kbd></p>
+      <p className="relative text-xs">oppure premi <kbd className="px-1.5 py-0.5 rounded border bg-card text-xs font-mono">Ctrl+N</kbd></p>
     </div>
   );
 }

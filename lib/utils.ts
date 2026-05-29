@@ -27,26 +27,34 @@ export function formatDate(dateString: string): string {
   }
 }
 
-export const NOTE_COLORS: Record<NoteColor, { bg: string; bgDark: string; border: string; label: string }> = {
-  default: { bg: "bg-white", bgDark: "dark:bg-zinc-900", border: "border-zinc-200 dark:border-zinc-700", label: "Nessuno" },
-  red:     { bg: "bg-red-50",    bgDark: "dark:bg-red-950/40",    border: "border-red-200 dark:border-red-800",    label: "Rosso" },
-  orange:  { bg: "bg-orange-50", bgDark: "dark:bg-orange-950/40", border: "border-orange-200 dark:border-orange-800", label: "Arancio" },
-  yellow:  { bg: "bg-yellow-50", bgDark: "dark:bg-yellow-950/40", border: "border-yellow-200 dark:border-yellow-800", label: "Giallo" },
-  green:   { bg: "bg-green-50",  bgDark: "dark:bg-green-950/40",  border: "border-green-200 dark:border-green-800",  label: "Verde" },
-  blue:    { bg: "bg-blue-50",   bgDark: "dark:bg-blue-950/40",   border: "border-blue-200 dark:border-blue-800",   label: "Blu" },
-  purple:  { bg: "bg-purple-50", bgDark: "dark:bg-purple-950/40", border: "border-purple-200 dark:border-purple-800", label: "Viola" },
-  pink:    { bg: "bg-pink-50",   bgDark: "dark:bg-pink-950/40",   border: "border-pink-200 dark:border-pink-800",   label: "Rosa" },
+// Sistema colori coerente light/dark.
+//  bg     = sfondo card (tinta tenue, stessa identità nei due temi)
+//  border = bordo coerente
+//  accent = barretta/accento colorato pieno
+//  dot    = pallino selettore colore
+export const NOTE_COLORS: Record<
+  NoteColor,
+  { bg: string; border: string; accent: string; dot: string; label: string }
+> = {
+  default: { bg: "bg-card",                      border: "border-border",                          accent: "bg-transparent", dot: "bg-zinc-300 dark:bg-zinc-600", label: "Nessuno" },
+  red:     { bg: "bg-rose-50 dark:bg-rose-500/10",     border: "border-rose-200 dark:border-rose-500/30",     accent: "bg-rose-500",    dot: "bg-rose-500",    label: "Rosso" },
+  orange:  { bg: "bg-amber-50 dark:bg-amber-500/10",   border: "border-amber-200 dark:border-amber-500/30",   accent: "bg-amber-500",   dot: "bg-amber-500",   label: "Arancio" },
+  yellow:  { bg: "bg-yellow-50 dark:bg-yellow-400/10", border: "border-yellow-200 dark:border-yellow-400/30", accent: "bg-yellow-400",  dot: "bg-yellow-400",  label: "Giallo" },
+  green:   { bg: "bg-emerald-50 dark:bg-emerald-500/10", border: "border-emerald-200 dark:border-emerald-500/30", accent: "bg-emerald-500", dot: "bg-emerald-500", label: "Verde" },
+  blue:    { bg: "bg-sky-50 dark:bg-sky-500/10",       border: "border-sky-200 dark:border-sky-500/30",       accent: "bg-sky-500",     dot: "bg-sky-500",     label: "Blu" },
+  purple:  { bg: "bg-violet-50 dark:bg-violet-500/10", border: "border-violet-200 dark:border-violet-500/30", accent: "bg-violet-500",  dot: "bg-violet-500",  label: "Viola" },
+  pink:    { bg: "bg-pink-50 dark:bg-pink-500/10",     border: "border-pink-200 dark:border-pink-500/30",     accent: "bg-pink-500",    dot: "bg-pink-500",    label: "Rosa" },
 };
 
 export const COLOR_DOT: Record<NoteColor, string> = {
-  default: "bg-zinc-400",
-  red:     "bg-red-400",
-  orange:  "bg-orange-400",
+  default: "bg-zinc-300 dark:bg-zinc-600",
+  red:     "bg-rose-500",
+  orange:  "bg-amber-500",
   yellow:  "bg-yellow-400",
-  green:   "bg-green-400",
-  blue:    "bg-blue-400",
-  purple:  "bg-purple-400",
-  pink:    "bg-pink-400",
+  green:   "bg-emerald-500",
+  blue:    "bg-sky-500",
+  purple:  "bg-violet-500",
+  pink:    "bg-pink-500",
 };
 
 export function downloadFile(content: string, filename: string, mimeType: string) {
