@@ -1,10 +1,14 @@
 "use client";
-import { useNotesStore } from "@/lib/store/notesStore";
+import { useMemo } from "react";
+import { useNotesStore, filterNotes } from "@/lib/store/notesStore";
 import { NoteCard } from "@/components/notes/NoteCard";
 import { Loader2 } from "lucide-react";
 
 export function NoteList() {
-  const { filteredNotes, isLoading, filters } = useNotesStore();
+  const notes = useNotesStore((s) => s.notes);
+  const filters = useNotesStore((s) => s.filters);
+  const isLoading = useNotesStore((s) => s.isLoading);
+  const filteredNotes = useMemo(() => filterNotes(notes, filters), [notes, filters]);
 
   if (isLoading) {
     return (

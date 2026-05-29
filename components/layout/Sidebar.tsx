@@ -1,10 +1,10 @@
 "use client";
-import { useRef, useState } from "react";
+import { useRef, useState, useMemo } from "react";
 import {
   Plus, Search, Star, Pin, Archive, Tag, Settings, ChevronDown,
   ChevronRight, StickyNote, Keyboard, LogOut, SortAsc, SortDesc,
 } from "lucide-react";
-import { useNotesStore } from "@/lib/store/notesStore";
+import { useNotesStore, filterNotes } from "@/lib/store/notesStore";
 import { NoteList } from "@/components/notes/NoteList";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
 import { cn } from "@/lib/utils";
@@ -25,7 +25,9 @@ interface SidebarProps {
 
 export function Sidebar({ searchRef }: SidebarProps) {
   const router = useRouter();
-  const { filters, setFilter, newNote, tags, setTagManagerOpen, setShortcutsOpen, filteredNotes } = useNotesStore();
+  const { filters, setFilter, newNote, tags, setTagManagerOpen, setShortcutsOpen } = useNotesStore();
+  const notes = useNotesStore((s) => s.notes);
+  const filteredNotes = useMemo(() => filterNotes(notes, filters), [notes, filters]);
   const [tagsOpen, setTagsOpen] = useState(true);
   const [sortOpen, setSortOpen] = useState(false);
 

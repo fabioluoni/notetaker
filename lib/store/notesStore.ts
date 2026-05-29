@@ -16,10 +16,6 @@ interface NotesState {
   isTagManagerOpen: boolean;
   isShortcutsOpen: boolean;
 
-  // Computed
-  selectedNote: Note | undefined;
-  filteredNotes: Note[];
-
   // Actions
   loadAll: () => Promise<void>;
   selectNote: (id: string | null) => void;
@@ -57,57 +53,6 @@ export const useNotesStore = create<NotesState>()((set, get) => ({
   isLoading: false,
   isTagManagerOpen: false,
   isShortcutsOpen: false,
-
-  get selectedNote() {
-    return get().notes.find((n) => n.id === get().selectedNoteId);
-  },
-
-  get filteredNotes() {
-    const { notes, filters } = get();
-    let result = [...notes];
-
-    // Section filter
-    if (filters.section === "pinned")    result = result.filter((n) => n.is_pinned && !n.is_archived);
-    else if (filters.section === "favorites") result = result.filter((n) => n.is_favorite && !n.is_archived);
-    else if (filters.section === "archived") result = result.filter((n) => n.is_archived);
-    else result = result.filter((n) => !n.is_archived);
-
-    // Tag filter
-    if (filters.tagId) {
-      result = result.filter((n) => n.tags?.some((t) => t.id === filters.tagId));
-    }
-
-    // Search filter
-    if (filters.search.trim()) {
-      const q = filters.search.toLowerCase();
-      result = result.filter(
-        (n) =>
-          n.title.toLowerCase().includes(q) ||
-          n.content.toLowerCase().includes(q)
-      );
-    }
-
-    // Sort
-    result.sort((a, b) => {
-      let va: string, vb: string;
-      if (filters.sortBy === "title") {
-        va = a.title.toLowerCase();
-        vb = b.title.toLowerCase();
-      } else {
-        va = a[filters.sortBy];
-        vb = b[filters.sortBy];
-      }
-      const cmp = va < vb ? -1 : va > vb ? 1 : 0;
-      return filters.sortDir === "asc" ? cmp : -cmp;
-    });
-
-    // Pinned first (only in "all" section)
-    if (filters.section === "all") {
-      result.sort((a, b) => (b.is_pinned ? 1 : 0) - (a.is_pinned ? 1 : 0));
-    }
-
-    return result;
-  },
 
   loadAll: async () => {
     set({ isLoading: true });
@@ -233,3 +178,48 @@ export const useNotesStore = create<NotesState>()((set, get) => ({
     }));
   },
 }));
+
+// --- Selector puro (usato con useMemo nei componenti) -------
+export function filterNotes(notes: Note[], filters: NoteFilters): Note[] {
+  let result = [...notes];
+
+  // Section filter
+  if (filters.section === "pinned")         result = result.filter((n) => n.is_pinned && !n.is_archived);
+  else if (filters.section === "favorites") result = result.filter((n) => n.is_favorite && !n.is_archived);
+  else if (filters.section === "archived")  result = result.filter((n) => n.is_archived);
+  else result = result.filter((n) => !n.is_archived);
+
+  // Tag filter
+  if (filters.tagId) {
+    result = result.filter((n) => n.tags?.some((t) => t.id === filters.tagId));
+  }
+
+  // Search filter
+  if (filters.search.trim()) {
+    const q = filters.search.toLowerCase();
+    result = result.filter(
+      (n) => n.title.toLowerCase().includes(q) || n.content.toLowerCase().includes(q)
+    );
+  }
+
+  // Sort
+  result.sort((a, b) => {
+    let va: string, vb: string;
+    if (filters.sortBy === "title") {
+      va = a.title.toLowerCase();
+      vb = b.title.toLowerCase();
+    } else {
+      va = a[filters.sortBy];
+      vb = b[filters.sortBy];
+    }
+    const cmp = va < vb ? -1 : va > vb ? 1 : 0;
+    return filters.sortDir === "asc" ? cmp : -cmp;
+  });
+
+  // Pinned first (only in "all" section)
+  if (filters.section === "all") {
+    result.sort((a, b) => (b.is_pinned ? 1 : 0) - (a.is_pinned ? 1 : 0));
+  }
+
+  return result;
+}
