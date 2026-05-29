@@ -87,3 +87,23 @@
 .w-md-editor-text {
   @apply text-foreground !important;
 }
+
+/* Fullscreen fix — copre sidebar e header */
+.w-md-editor-fullscreen {
+  z-index: 9999 !important;
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background: hsl(var(--background)) !important;
+}
+.w-md-editor-fullscreen .w-md-editor-content {
+  background: hsl(var(--background)) !important;
+}
+.w-md-editor-fullscreen .w-md-editor-toolbar {
+  background: hsl(var(--card)) !important;
+  border-bottom: 1px solid hsl(var(--border)) !important;
+}
+.w-md-editor-fullscreen .w-md-editor-text {
+  color: hsl(var(--foreground)) !important;
+}
